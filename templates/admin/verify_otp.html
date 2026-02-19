@@ -1,0 +1,57 @@
+
+
+
+{% extends 'base.html' %}
+{% block title %}Verify OTP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body p-4">
+
+        <h4 class="mb-3 text-center">Verify OTP</h4>
+
+      
+
+        <form method="POST" action="/verify-otp">
+
+          <!-- OTP -->
+          <div class="mb-3">
+            <label class="form-label">Enter OTP</label>
+            <input
+              type="text"
+              name="otp"
+              class="form-control"
+              placeholder="Enter the OTP sent to your email"
+              required>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-4">
+            <label class="form-label">Create Password</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Create a strong password"
+              required>
+          </div>
+
+          <!-- Button -->
+          <button type="submit" class="btn btn-success w-100">
+            Verify & Register
+          </button>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
+

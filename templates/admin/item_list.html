@@ -1,0 +1,121 @@
+
+
+{% extends 'base.html' %}
+{% block title %}All Products{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-12">
+
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+
+        <h4 class="mb-3">Product List</h4>
+
+      
+
+        <!-- Search + Filter -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <form method="GET" action="/admin/item-list" class="d-flex">
+              <input
+                type="text"
+                name="search"
+                class="form-control me-2"
+                placeholder="Search product..."
+                value="{{ request.args.get('search', '') }}">
+              <button class="btn btn-primary">Search</button>
+            </form>
+          </div>
+
+          <div class="col-md-6">
+            <form method="GET" action="/admin/item-list" class="d-flex">
+              <select name="category" class="form-select me-2">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                  <option value="{{ cat.category }}"
+                    {% if request.args.get('category') == cat.category %}selected{% endif %}>
+                    {{ cat.category }}
+                  </option>
+                {% endfor %}
+              </select>
+              <button class="btn btn-secondary">Filter</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Add Product -->
+        <a href="/admin/add-item" class="btn btn-success mb-3">
+          ➕ Add New Product
+        </a>
+
+        <!-- Products Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>View</th>
+                <th>Update</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for product in products %}
+              <tr>
+                <td>{{ product.product_id }}</td>
+
+                <td>
+                  <img
+                    src="/static/uploads/product_images/{{ product.image }}"
+                    class="img-thumbnail"
+                    width="70" height="70">
+                </td>
+
+                <td>{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>₹{{ product.price }}</td>
+
+                <td>
+                  <a href="/admin/view-item/{{ product.product_id }}"
+                     class="btn btn-info btn-sm">
+                    View
+                  </a>
+                </td>
+
+                <td>
+                  <a href="/admin/update-item/{{ product.product_id }}"
+                     class="btn btn-warning btn-sm">
+                    Update
+                  </a>
+                </td>
+
+                <td>
+                  <a href="/admin/delete-item/{{ product.product_id }}"
+                     class="btn btn-danger btn-sm"
+                     onclick="return confirm('Are you sure you want to delete this product?');">
+                    Delete
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Back -->
+        <a href="/admin-dashboard" class="btn btn-secondary mt-3">
+          Dashboard
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

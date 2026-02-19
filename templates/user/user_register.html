@@ -1,0 +1,72 @@
+
+
+
+{% extends 'base.html' %}
+{% block title %}User Registration{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body p-4">
+
+        <h4 class="mb-3 text-center">User Registration</h4>
+
+        
+
+        <form method="POST" action="/user-register">
+
+          <!-- Name -->
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              placeholder="Enter your name"
+              required>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter your email"
+              required>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-4">
+            <label class="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter your password"
+              required>
+          </div>
+
+          <!-- Register Button -->
+          <button type="submit" class="btn btn-success w-100">
+            Register
+          </button>
+
+        </form>
+
+        <div class="text-center mt-3">
+          <a href="/user-login">
+            Already have an account? Login
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+

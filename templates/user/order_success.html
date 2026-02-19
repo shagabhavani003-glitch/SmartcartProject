@@ -1,0 +1,117 @@
+
+
+{% extends 'base.html' %}
+
+{% block title %}Order Successful{% endblock %}
+
+{% block content %}
+
+<style>
+    .success-container {
+    width: 60%;
+    margin: auto;
+    padding: 25px;
+    text-align: center;
+    border-radius: 12px;
+    margin-top: 20px;
+
+    /* 🔥 Glass effect background */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.success-container h2 {
+    color: #198754;   /* Bootstrap green shade */
+    font-weight: 600;
+}
+
+.order-details {
+    text-align: left;
+    margin-top: 20px;
+    line-height: 1.8;
+    color: #222;   /* Dark text for clarity */
+}
+
+.items-list table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+}
+
+.items-list table, th, td {
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f9fa;
+}
+
+th, td {
+    padding: 12px;
+}
+
+.btn {
+    padding: 10px 18px;
+    background-color: #0d6efd;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    margin: 5px;
+    font-weight: 500;
+}
+
+.btn:hover {
+    background-color: #0b5ed7;
+}
+</style>
+
+<div class="success-container">
+
+    <h2>🎉 Your Order is Confirmed!</h2>
+    <p>Thank you for shopping with <strong>SmartCart</strong>.</p>
+
+    <div class="order-details">
+        <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+        <p><strong>Payment ID:</strong> {{ order.razorpay_payment_id }}</p>
+        <p><strong>Amount Paid:</strong> ₹{{ order.amount }}</p>
+        <p><strong>Order Date:</strong> {{ order.created_at }}</p>
+    </div>
+
+    <div class="items-list">
+        <h3>Order Summary</h3>
+
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price (₹)</th>
+            </tr>
+
+            {% for it in items %}
+            <tr>
+                <td>{{ it.product_name }}</td>
+                <td>{{ it.quantity }}</td>
+                <td>{{ it.price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <br>
+
+    <a href="/user/products" class="btn">Continue Shopping</a>
+    <a href="/user/my-orders" class="btn">View My Orders</a>
+
+    <a href="/user/download-invoice/{{ order.order_id }}" class="btn">
+        Download Invoice (PDF)
+    </a>
+
+</div>
+
+{% endblock %}
+
+
+

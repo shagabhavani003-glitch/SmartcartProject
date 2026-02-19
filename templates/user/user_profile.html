@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-7">
+
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+
+        <h4 class="mb-3">User Profile</h4>
+
+        <!-- Profile Image -->
+        <div class="text-center mb-4">
+          {% if user.profile_image %}
+            <img
+              src="/static/uploads/user_profiles/{{ user.profile_image }}"
+              class="rounded-circle img-thumbnail"
+              width="130"
+              height="130">
+          {% else %}
+            <p class="text-muted">No Profile Image</p>
+          {% endif %}
+        </div>
+
+        <form method="POST"
+              action="/user/profile"
+              enctype="multipart/form-data">
+
+          <!-- Name -->
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              value="{{ user.name }}"
+              required>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              value="{{ user.email }}"
+              required>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label class="form-label">New Password (optional)</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Leave blank to keep current password">
+          </div>
+
+          <!-- Profile Image -->
+          <div class="mb-4">
+            <label class="form-label">Upload New Profile Image (optional)</label>
+            <input
+              type="file"
+              name="profile_image"
+              class="form-control"
+              accept="image/*">
+          </div>
+
+          <!-- Buttons -->
+          <button type="submit" class="btn btn-primary">
+            Update Profile
+          </button>
+
+          <a href="/user-dashboard" class="btn btn-secondary ms-2">
+            Back to Dashboard
+          </a>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

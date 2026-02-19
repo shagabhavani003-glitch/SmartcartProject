@@ -1,0 +1,36 @@
+
+
+{% extends 'base.html' %}
+{% block title %}Payment Successful{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body p-4 text-center">
+
+        <h4 class="mb-3 text-success">Payment Successful!</h4>
+
+        <hr>
+
+        <p class="mb-2">
+          <strong>Payment ID:</strong><br>
+          {{ payment_id }}
+        </p>
+
+        <p class="mb-4">
+          <strong>Order ID:</strong><br>
+          {{ order_id }}
+        </p>
+
+        <a href="/user/products" class="btn btn-primary w-100">
+          Continue Shopping
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

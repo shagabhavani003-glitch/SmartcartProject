@@ -1,0 +1,93 @@
+
+
+
+{% extends 'base.html' %}
+{% block title %}Admin Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-7">
+
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+
+        <h4 class="mb-3">Admin Profile</h4>
+
+        
+
+        <!-- Profile Image -->
+        <div class="text-center mb-4">
+          {% if admin.profile_image %}
+            <img
+              src="/static/uploads/admin_profiles/{{ admin.profile_image }}"
+              class="rounded-circle img-thumbnail"
+              width="130"
+              height="130">
+          {% else %}
+            <p class="text-muted">No Profile Image</p>
+          {% endif %}
+        </div>
+
+        <form method="POST"
+              action="/admin/profile"
+              enctype="multipart/form-data">
+
+          <!-- Name -->
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              value="{{ admin.name }}"
+              required>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              value="{{ admin.email }}"
+              required>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label class="form-label">New Password (optional)</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Leave blank to keep current password">
+          </div>
+
+          <!-- Profile Image -->
+          <div class="mb-4">
+            <label class="form-label">Upload New Profile Image (optional)</label>
+            <input
+              type="file"
+              name="profile_image"
+              class="form-control"
+              accept="image/*">
+          </div>
+
+          <!-- Buttons -->
+          <button type="submit" class="btn btn-warning">
+            Update Profile
+          </button>
+
+          <a href="/admin-dashboard" class="btn btn-secondary ms-2">
+            Back to Dashboard
+          </a>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

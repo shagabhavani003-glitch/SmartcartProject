@@ -1,0 +1,62 @@
+
+
+{% extends 'base.html' %}
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body p-4">
+
+        <h4 class="mb-3 text-center">Admin Login</h4>
+
+       
+
+        <form method="POST" action="/admin-login">
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter your email"
+              required>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-4">
+            <label class="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter your password"
+              required>
+          </div>
+
+          <!-- Button -->
+          <button type="submit" class="btn btn-primary w-100">
+            Login
+          </button>
+
+
+          <!-- Register -->
+        <div class="text-center mt-2">
+          <span>Don't have an account?</span>
+          <a href="{{ url_for('admin_signup') }}">Register</a>
+        </div>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
+

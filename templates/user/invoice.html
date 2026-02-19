@@ -1,0 +1,88 @@
+
+
+
+
+{% extends 'base.html' %}
+{% block title %}Invoice{% endblock %}
+
+{% block content %}
+
+<style>
+    body { font-family: Arial, sans-serif; }
+
+    .invoice-box {
+        width: 80%;
+        margin: 40px auto;
+        border: 1px solid #eee;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+    }
+
+    .header {
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f5f5f5;
+    }
+</style>
+
+<div class="invoice-box shadow-sm">
+
+    <div class="header">
+        <h2 class="fw-bold">SmartCart Invoice</h2>
+        <p><strong>Order ID:</strong> {{ order.order_id }}</p>
+        <p><strong>Date:</strong> {{ order.created_at }}</p>
+    </div>
+
+    <h3 class="mt-4">Customer Details</h3>
+    <p><strong>User ID:</strong> {{ order.user_id }}</p>
+
+    <h3 class="mt-4">Items</h3>
+
+    <div class="table-responsive">
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price (₹)</th>
+            </tr>
+
+            {% for it in items %}
+            <tr>
+                <td>{{ it.product_name }}</td>
+                <td>{{ it.quantity }}</td>
+                <td>{{ it.price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h3 style="text-align:right;" class="mt-4">
+        Grand Total: ₹{{ order.amount }}
+    </h3>
+
+    <div class="text-center mt-4">
+        <a href="/user/products" class="btn btn-primary">
+            Continue Shopping
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

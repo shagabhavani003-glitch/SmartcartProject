@@ -1,0 +1,80 @@
+
+
+
+
+
+
+{% extends 'base.html' %}
+{% block title %}User Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body p-4">
+
+        <h4 class="mb-3 text-center">User Login</h4>
+
+        
+
+        <form method="POST" action="/user-login">
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter your email"
+              required>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-4">
+            <label class="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              placeholder="Enter your password"
+              required>
+          </div>
+
+        
+
+          <!-- Login Button -->
+          <button type="submit" class="btn btn-primary w-100">
+            Login
+          </button>
+
+        </form>
+
+        <div class="text-center mt-3">
+          <a href="/user-register">
+            Create Account
+          </a>
+        </div>
+
+        <!-- 🔹 ADD THIS HERE -->
+<div class="text-end mb-3">
+  <a href="{{ url_for('user_forgot_password') }}">
+    Forgot Password?
+  </a>
+</div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+ 

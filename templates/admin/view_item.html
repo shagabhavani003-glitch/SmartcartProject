@@ -1,0 +1,47 @@
+
+
+{% extends 'base.html' %}
+{% block title %}Product Details{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-7">
+
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+
+        <h4 class="mb-4">Product Details</h4>
+
+        <!-- Product Image -->
+        <div class="text-center mb-4">
+          <img
+            src="/static/uploads/product_images/{{ product.image }}"
+            class="img-thumbnail"
+            width="220">
+        </div>
+
+        <!-- Product Info -->
+        <p><strong>Name:</strong> {{ product.name }}</p>
+        <p><strong>Description:</strong> {{ product.description }}</p>
+        <p><strong>Category:</strong> {{ product.category }}</p>
+        <p><strong>Price:</strong> ₹{{ product.price }}</p>
+
+        <!-- Buttons -->
+        <div class="mt-4">
+          <a href="/admin/item-list" class="btn btn-secondary">
+            Back to List
+          </a>
+
+          <a href="{{ url_for('admin_dashboard') }}" class="btn btn-info ms-2">
+            Dashboard
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
