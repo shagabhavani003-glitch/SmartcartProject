@@ -1,9 +1,18 @@
+-- CREATE TABLE admin (
+--     admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
+--     name TEXT,
+--     email TEXT UNIQUE,
+--     password TEXT,
+--     profile_image TEXT
+-- );
+
 CREATE TABLE admin (
     admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     email TEXT UNIQUE,
     password TEXT,
-    profile_image TEXT
+    profile_image TEXT,
+    is_online INTEGER DEFAULT 0
 );
 
 
@@ -27,13 +36,23 @@ CREATE TABLE orders (
 );
 
 
+-- CREATE TABLE products (
+--     product_id INTEGER PRIMARY KEY AUTOINCREMENT,
+--     name TEXT,
+--     description TEXT,
+--     category TEXT,
+--     price REAL,
+--     image TEXT
+-- );
+
 CREATE TABLE products (
     product_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     description TEXT,
     category TEXT,
     price REAL,
-    image TEXT
+    image TEXT,
+    admin_id INTEGER
 );
 
 CREATE TABLE users (

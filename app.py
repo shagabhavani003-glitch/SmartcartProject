@@ -58,6 +58,8 @@ def get_db_connection():
     return conn
 
 
+
+
 # ---------------------------------------------------------
 # ROUTE 1: ADMIN SIGNUP (SEND OTP)
 # ---------------------------------------------------------
@@ -160,56 +162,70 @@ def verify_otp_post():
 @app.route('/admin-login', methods=['GET', 'POST'])
 def admin_login():
 
-    # Show login page
     if request.method == 'GET':
         return render_template("admin/admin_login.html")
 
-    # POST → Validate login
     email = request.form['email']
     password = request.form['password']
 
-    # Step 1: Check if admin email exists
     conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM admin WHERE email=?", (email,))
     admin = cursor.fetchone()
 
-    cursor.close()
-    conn.close()
-
     if admin is None:
+        cursor.close()
+        conn.close()
         flash("Email not found! Please register first.", "danger")
         return redirect('/admin-login')
 
-    # Step 2: Compare entered password with hashed password
     stored_hashed_password = admin['password'].encode('utf-8')
 
     if not bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password):
+        cursor.close()
+        conn.close()
         flash("Incorrect password! Try again.", "danger")
         return redirect('/admin-login')
     
-    
-  # Clear user session if exists
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    UPDATE admin 
+    SET login_count = login_count + 1 
+    WHERE admin_id = ?
+    """, (admin['admin_id'],))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # # ✅ UPDATE is_online BEFORE closing
+    # cursor.execute(
+    #     "UPDATE admin SET is_online=1 WHERE admin_id=?",
+    #     (admin['admin_id'],)
+    # )
+    # conn.commit()
+
+    # # ✅ Now close
+    # cursor.close()
+    # conn.close()
+
+
+    # Clear user session
     session.pop('user_id', None)
     session.pop('user_name', None)
     session.pop('user_email', None)
 
-
-
-
-    # Step 5: If login success → Create admin session
+    # Create admin session
     session['admin_id'] = admin['admin_id']
     session['admin_name'] = admin['name']
     session['admin_email'] = admin['email']
 
-
-    
-
-
     flash("Login Successful!", "success")
     return redirect('/admin-dashboard')
-
 
 
 # =================================================================
@@ -240,12 +256,13 @@ def admin_dashboard():
     cursor = conn.cursor()
 
     # 1️⃣ Fetch category list for dropdown
-    cursor.execute("SELECT DISTINCT category FROM products")
+    cursor.execute("SELECT DISTINCT category FROM products WHERE admin_id=?", 
+                   (session['admin_id'],))
     categories = cursor.fetchall()
 
     # 2️⃣ Build dynamic query based on filters
-    query = "SELECT * FROM products WHERE 1=1"
-    params = []
+    query = "SELECT * FROM products WHERE admin_id=?"
+    params = [session['admin_id']]
 
     if search:
         query += " AND name LIKE ?"
@@ -258,13 +275,37 @@ def admin_dashboard():
     cursor.execute(query, params)
     products = cursor.fetchall()
 
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT login_count 
+    FROM admin 
+    WHERE admin_id = ?
+    """, (session['admin_id'],))
+
+    count = cursor.fetchone()['login_count']
+
     cursor.close()
     conn.close()
+
+# Nuvvu already login lo unnav kabatti 1 subtract
+    other_sessions = count - 1
+
+
+    #  # ✅ 3️⃣ Get online admins count
+    # cursor.execute("SELECT COUNT(*) FROM admin WHERE is_online=1")
+    # online_count = cursor.fetchone()[0]
+
+
+    
 
     return render_template(
         "admin/dashboard.html",
         products=products,
-        categories=categories,admin_name=session['admin_name']
+        categories=categories,admin_name=session['admin_name'],
+         other_sessions=other_sessions
     )
 
 
@@ -274,6 +315,35 @@ def admin_dashboard():
 # =================================================================
 @app.route('/admin-logout')
 def admin_logout():
+
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    UPDATE admin 
+    SET login_count = login_count - 1 
+    WHERE admin_id = ?
+    """, (session['admin_id'],))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    # if 'admin_id' in session:
+
+    #     conn = get_db_connection()
+    #     cursor = conn.cursor()
+
+    #     # ✅ Make admin offline
+    #     cursor.execute(
+    #         "UPDATE admin SET is_online=0 WHERE admin_id=?",
+    #         (session['admin_id'],)
+    #     )
+    #     conn.commit()
+
+    #     cursor.close()
+    #     conn.close()
 
     # Clear admin session
     session.pop('admin_id', None)
@@ -343,8 +413,8 @@ def add_item():
     cursor = conn.cursor()
 
     cursor.execute(
-        "INSERT INTO products (name, description, category, price, image) VALUES (?, ?, ?, ?, ?)",
-        (name, description, category, price, filename)
+        "INSERT INTO products (name, description, category, price, image,admin_id) VALUES (?, ?, ?, ?, ?, ?)",
+        (name, description, category, price, filename,session['admin_id'])
     )
 
     conn.commit()
@@ -378,8 +448,8 @@ def item_list():
     categories = cursor.fetchall()
 
     # 2️⃣ Build dynamic query based on filters
-    query = "SELECT * FROM products WHERE 1=1"
-    params = []
+    query = "SELECT * FROM products WHERE admin_id=?"
+    params = [session['admin_id']]
 
     if search:
         query += " AND name LIKE ?"
@@ -1464,6 +1534,8 @@ def user_reset_password(token):
 
     flash("Password reset successful! Please login.", "success")
     return redirect('/user-login')
+
+
 
 
 
