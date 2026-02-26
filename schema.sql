@@ -13,6 +13,7 @@ CREATE TABLE admin (
     password TEXT,
     profile_image TEXT,
     is_online INTEGER DEFAULT 0
+    login_count INTEGER DEFAULT 0
 );
 
 
