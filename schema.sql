@@ -1,20 +1,20 @@
--- CREATE TABLE admin (
---     admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
---     name TEXT,
---     email TEXT UNIQUE,
---     password TEXT,
---     profile_image TEXT
--- );
-
 CREATE TABLE admin (
     admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     email TEXT UNIQUE,
     password TEXT,
-    profile_image TEXT,
-    is_online INTEGER DEFAULT 0
-    login_count INTEGER DEFAULT 0
+    profile_image TEXT
 );
+
+-- CREATE TABLE admin (
+--     admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
+--     name TEXT,
+--     email TEXT UNIQUE,
+--     password TEXT,
+--     profile_image TEXT,
+--     is_online INTEGER DEFAULT 0
+--     login_count INTEGER DEFAULT 0
+-- );
 
 
 CREATE TABLE order_items (
