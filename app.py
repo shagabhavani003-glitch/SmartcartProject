@@ -189,29 +189,7 @@ def admin_login():
         return redirect('/admin-login')
     
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    UPDATE admin 
-    SET login_count = login_count + 1 
-    WHERE admin_id = ?
-    """, (admin['admin_id'],))
-
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    # # ✅ UPDATE is_online BEFORE closing
-    # cursor.execute(
-    #     "UPDATE admin SET is_online=1 WHERE admin_id=?",
-    #     (admin['admin_id'],)
-    # )
-    # conn.commit()
-
-    # # ✅ Now close
-    # cursor.close()
-    # conn.close()
+    
 
 
     # Clear user session
@@ -275,29 +253,11 @@ def admin_dashboard():
     cursor.execute(query, params)
     products = cursor.fetchall()
 
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    SELECT login_count 
-    FROM admin 
-    WHERE admin_id = ?
-    """, (session['admin_id'],))
-
-    count = cursor.fetchone()['login_count']
-
     cursor.close()
     conn.close()
 
-# Nuvvu already login lo unnav kabatti 1 subtract
-    other_sessions = count - 1
 
-
-    #  # ✅ 3️⃣ Get online admins count
-    # cursor.execute("SELECT COUNT(*) FROM admin WHERE is_online=1")
-    # online_count = cursor.fetchone()[0]
-
+    
 
     
 
@@ -305,7 +265,7 @@ def admin_dashboard():
         "admin/dashboard.html",
         products=products,
         categories=categories,admin_name=session['admin_name'],
-         other_sessions=other_sessions
+         
     )
 
 
@@ -317,33 +277,7 @@ def admin_dashboard():
 def admin_logout():
 
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("""
-    UPDATE admin 
-    SET login_count = login_count - 1 
-    WHERE admin_id = ?
-    """, (session['admin_id'],))
-
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    # if 'admin_id' in session:
-
-    #     conn = get_db_connection()
-    #     cursor = conn.cursor()
-
-    #     # ✅ Make admin offline
-    #     cursor.execute(
-    #         "UPDATE admin SET is_online=0 WHERE admin_id=?",
-    #         (session['admin_id'],)
-    #     )
-    #     conn.commit()
-
-    #     cursor.close()
-    #     conn.close()
+    
 
     # Clear admin session
     session.pop('admin_id', None)
